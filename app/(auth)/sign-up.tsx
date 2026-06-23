@@ -24,7 +24,7 @@ export default function SignUpScreen() {
   const [code, setCode] = useState("");
   const isLoading = fetchStatus === "fetching";
 
-  if (signUp.status === "complete" || isSignedIn) {
+  if (signUp?.status === "complete" || isSignedIn) {
     return null;
   }
 
@@ -40,15 +40,15 @@ export default function SignUpScreen() {
       return;
     }
     if (!error) {
-      await signUp.verifications.sendEmailCode();
+      await signUp?.verifications.sendEmailCode();
     }
   };
   const onVerifyPress = async () => {
-    await signUp.verifications.verifyEmailCode({
+    await signUp?.verifications.verifyEmailCode({
       code,
     });
-    if (signUp.status === "complete") {
-      await signUp.finalize({
+    if (signUp?.status === "complete") {
+      await signUp?.finalize({
         navigate: ({ decorateUrl }) => {
           const url = decorateUrl("/");
           router.replace(url as any);
@@ -58,9 +58,9 @@ export default function SignUpScreen() {
   };
 
   if (
-    signUp.status === "missing_requirements" &&
-    signUp.unverifiedFields.includes("email_address") &&
-    signUp.missingFields.length === 0
+    signUp?.status === "missing_requirements" &&
+    signUp?.unverifiedFields.includes("email_address") &&
+    signUp?.missingFields.length === 0
   ) {
     return (
       <View className="flex-1 justify-center px-6 py-12">
@@ -93,7 +93,7 @@ export default function SignUpScreen() {
           )}
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => signUp.verifications.sendEmailCode()}
+          onPress={() => signUp?.verifications.sendEmailCode()}
           disabled={isLoading}
         >
           {isLoading ? (

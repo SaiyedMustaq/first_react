@@ -2,11 +2,11 @@ import React from "react";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function SettingsScreen() {
+export default function Create() {
   return (
     <SafeAreaView>
       <View>
-        <Text>Setting Screen</Text>
+        <Text>Create</Text>
       </View>
     </SafeAreaView>
   );

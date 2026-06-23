@@ -29,8 +29,8 @@ export default function SignInScreen() {
       alert(error);
       return;
     }
-    if (signIn.status === "complete") {
-      await signIn.finalize({
+    if (signIn?.status === "complete") {
+      await signIn?.finalize({
         navigate: ({ session, decorateUrl }) => {
           if (session.currentTask) {
             console.log(session?.currentTask);
@@ -40,22 +40,22 @@ export default function SignInScreen() {
           router.replace(url as any);
         },
       });
-    } else if (signIn.status === "needs_second_factor") {
-      await signIn.mfa.sendPhoneCode();
-    } else if (signIn.status === "needs_client_trust") {
-      const emailController = signIn.supportedFirstFactors.find(
+    } else if (signIn?.status === "needs_second_factor") {
+      await signIn?.mfa.sendPhoneCode();
+    } else if (signIn?.status === "needs_client_trust") {
+      const emailController = signIn?.supportedFirstFactors.find(
         (factor) => factor.strategy === "email_code",
       );
 
       if (emailController) {
-        await signIn.mfa.sendEmailCode();
+        await signIn?.mfa.sendEmailCode();
       }
     } else {
       console.log("Sign In attempt not complete:", signIn);
     }
   };
   const onVerifyPress = async () => {
-    const { error } = await signIn.mfa.verifyEmailCode({
+    const { error } = await signIn?.mfa.verifyEmailCode({
       code,
     });
     console.log("Sign In attempt:", signIn);
@@ -63,8 +63,8 @@ export default function SignInScreen() {
       alert(error);
       return;
     }
-    if (signIn.status === "complete") {
-      await signIn.finalize({
+    if (signIn?.status === "complete") {
+      await signIn?.finalize({
         navigate: ({ session, decorateUrl }) => {
           if (session.currentTask) {
             console.log(session?.currentTask);
@@ -77,7 +77,7 @@ export default function SignInScreen() {
     }
     console.log("Sign In attempt not complete:", signIn);
   };
-  if (signIn.status === "needs_client_trust") {
+  if (signIn?.status === "needs_client_trust") {
     return (
       <View className="flex-1 justify-center px-6 py-12">
         <Image
