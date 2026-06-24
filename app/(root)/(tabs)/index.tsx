@@ -1,6 +1,7 @@
 import { supabase } from "@/app/lib/supabase";
 import FeaturedCard from "@/components/FeatturedCard";
-import { Properties } from "@/types";
+import PropertyCard from "@/components/PropertyCard";
+import { Property } from "@/types";
 import { Show, useUser } from "@clerk/expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
@@ -12,8 +13,8 @@ export default function HomeScreen() {
   const { user } = useUser();
   const router=useRouter();
 
-  const [featured,setFeatured]=useState<Properties[]>([]);
-  const [recommended,setRecommended]=useState<Properties[]>([]);
+  const [featured,setFeatured]=useState<Property[]>([]);
+  const [recommended,setRecommended]=useState<Property[]>([]);
   const [loading,setLoading]=useState(true);
 
   const fetchProperties=async()=>{
@@ -23,21 +24,20 @@ export default function HomeScreen() {
       .select("*")
       .eq("is_featured",true)
       .order("created_at", { ascending: false });
-      setFeatured(featuredData as Properties[]);
+      setFeatured(featuredData as Property[]);
 
       const { data:recommendedData } = await supabase.from("properties")
       .select("*")
       .eq("is_featured",false)
       .order("created_at", { ascending: false });
-      setRecommended(recommendedData as Properties[]);      
+      setRecommended(recommendedData as Property[]);      
     }catch(error){
       console.error("Error fetching properties:",error);
     }finally{
       setLoading(false);
     }
   }
-  console.log("Featured Properties:",featured);
-  console.log("Recommended Properties:",recommended);
+
   useFocusEffect(
     useCallback(() => {
       fetchProperties();
@@ -57,12 +57,12 @@ export default function HomeScreen() {
       <FlatList
         data={recommended}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ gap: 100 }}
+        contentContainerStyle={{ gap: 0 }}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View style={styles.container}>
             {/* header */}
-           <View>
+           <View className="flex-row items-center justify-center mb-8">
             <Image
             source={require("/Users/macmini/mustaq/react_native/first_react/assets/images/kribb.png")}
             //source={require("../assets/images/kribb.png")}
@@ -115,8 +115,8 @@ export default function HomeScreen() {
           </View>
         }
         renderItem={({ item }) => (
-          <View>
-            <Text>{item.title}</Text>
+          <View className="mb-4">
+            <PropertyCard property={item} />
           </View>
         )}
         ListEmptyComponent={
@@ -133,9 +133,9 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     padding: 8,
-    gap: 8,
+    //gap: 8,
   },
   greeting: {
     fontSize: 18,

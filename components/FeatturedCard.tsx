@@ -1,12 +1,12 @@
 import { formatPrice } from "@/app/lib/utils";
-import { Properties } from "@/types";
+import { Property } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 
-export default function FeaturedCard({property}:{property:Properties}) {
+export default function FeaturedCard({property}:{property:Property}) {
   const router=useRouter();
   return (
     <TouchableOpacity
@@ -23,6 +23,7 @@ export default function FeaturedCard({property}:{property:Properties}) {
     >
       <Image source={{uri:property.images[0]}} 
       className="w-full h-44"
+      resizeMode="cover"
       />
       <View className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-full">
         <Text
@@ -48,7 +49,19 @@ export default function FeaturedCard({property}:{property:Properties}) {
             <Ionicons name="location-outline" size={16} color="gray" />
             <Text className="text-sm text-gray-500">{property.address},{property.city}</Text>
         </View>
+        
+      </View>
+      <View className="flex-row items-center  px-4">
         <Text className="text-blue-600 font-bold mt-2">{formatPrice(property.price)}</Text>
+        <View className="flex-row items-center gap-1 px-4">
+          <Ionicons name="bed-outline" size={13} color="gray" />
+          <Text className="text-tx text-gray-500">{property.bedrooms} Beds</Text>
+        </View>
+    
+        <View className="flex-row items-center gap-1">
+          <Ionicons name="water-outline" size={13} color="gray" />
+          <Text className="text-tx text-gray-500">{property.bathrooms} Baths</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );

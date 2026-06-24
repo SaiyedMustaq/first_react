@@ -1,6 +1,14 @@
 export const formatPrice = (price: number): string => {
-    if(price>=1000000){
-        return `$${(price/1000000).toFixed(1).repeat(1)}M`;
+    if(price>=10000000){
+      const cr=(price/10000000).toFixed(1).replace(/\.0$/, "");
+        return `₹${cr}cr`;
     }
-  return `$${price.toLocaleString()}`;
+
+    if(price>=100000){
+      const l=(price/10000).toFixed(1).replace(/\.0$/, "");
+        return `₹${l}L`;
+    }
+
+    return `₹${price}`;
+  
 };
