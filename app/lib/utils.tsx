@@ -5,7 +5,7 @@ export const formatPrice = (price: number): string => {
     }
 
     if(price>=100000){
-      const l=(price/10000).toFixed(1).replace(/\.0$/, "");
+       const l=(price/100000).toFixed(1).replace(/\.0$/, "");
         return `₹${l}L`;
     }
 
