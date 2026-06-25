@@ -47,33 +47,43 @@ function AndroidTab() {
   const isAdmin = useUserStore((state) => state.isAdmin);
   console.log("isAdmin", isAdmin);
   return (
-    <NativeTabs>
-      <NativeTabs.Trigger name="index">
-        <Label>Home</Label>
-        <Icon sf="house.fill" drawable="custom_android_drawable" />
+  <NativeTabs
+    backgroundColor="#FFFFFF"
+    tintColor="#2E0CA8"
+    blurEffect="systemChromeMaterial"
+    labelStyle={{
+      fontSize: 12,
+      fontWeight: '600',
+    }}
+  >
+    <NativeTabs.Trigger name="index">
+      <Icon sf="house.fill" drawable="custom_android_drawable" />
+      <Label sf="house.fill">Home</Label>
+    </NativeTabs.Trigger>
+
+    <NativeTabs.Trigger name="search">
+      <Icon sf="magnifyingglass" drawable="custom_search_drawable" />
+      <Label>Search</Label>
+    </NativeTabs.Trigger>
+
+    {isAdmin && (
+      <NativeTabs.Trigger name="create">
+        <Icon sf="plus.circle.fill" drawable="custom_admin_drawable" />
+        <Label>Create</Label>
       </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="search">
-        <Icon sf="magnifyingglass" drawable="custom_search_drawable" />
-        <Label>Search</Label>
-      </NativeTabs.Trigger>
-        {
-          isAdmin && (
-            <NativeTabs.Trigger name="create">
-              <Icon sf="plus.circle.fill" drawable="custom_admin_drawable" />
-              <Label>Create</Label>
-            </NativeTabs.Trigger>
-          )
-        }
-      <NativeTabs.Trigger name="saved">
-        <Icon sf="heart" drawable="custom_saved_drawable" />
-        <Label>Saved</Label>
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="profile">
-        <Icon sf="person" drawable="custom_profile_drawable" />
-        <Label>Profile</Label>
-      </NativeTabs.Trigger>
-    </NativeTabs>
-  );
+    )}
+
+    <NativeTabs.Trigger name="saved">
+      <Icon sf="heart.fill" drawable="custom_saved_drawable" />
+      <Label>Saved</Label>
+    </NativeTabs.Trigger>
+
+    <NativeTabs.Trigger name="profile">
+      <Icon sf="person.crop.circle.fill" drawable="custom_profile_drawable" />
+      <Label>Profile</Label>
+    </NativeTabs.Trigger>
+  </NativeTabs>
+);
 }
 
 
