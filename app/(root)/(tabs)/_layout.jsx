@@ -5,7 +5,12 @@ import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
 import { Platform } from "react-native";
 
 function AndroidTab() {
-  const isAdmin = useUserStore((state) => state.isAdmin);
+  const loaded = useSomething();
+
+  if (!loaded) return null;
+
+  const isAdmin = useUserStore((state) => state.isAdmin); // hook skipped earlier
+
   console.log("isAdmin", isAdmin);
   return (
     <Tabs screenOptions={{
@@ -24,6 +29,7 @@ function AndroidTab() {
       {
         isAdmin && (
           <Tabs.Screen name="create" options={{
+
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="add" color={color} size={size} />
             ),
@@ -44,12 +50,11 @@ function AndroidTab() {
   );
 }
  function IosTab() {
-  const isAdmin = useUserStore((state) => state.isAdmin);
-  console.log("isAdmin", isAdmin);
+ const isAdmin = useUserStore((state) => state.isAdmin);
   return (
   <NativeTabs
     backgroundColor="#FFFFFF"
-    tintColor="#2E0CA8"
+    tintColor="#5C35EC"
     blurEffect="systemChromeMaterial"
     labelStyle={{
       fontSize: 12,
@@ -88,6 +93,5 @@ function AndroidTab() {
 
 
 export default function TabsLayout() {
-
   return Platform.OS === "android" ? <AndroidTab /> : <IosTab />;
 }
