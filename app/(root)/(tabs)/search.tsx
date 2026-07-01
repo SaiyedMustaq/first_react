@@ -1,22 +1,23 @@
-import { userFilterStore } from "@/store/filterStore";
-import { Property } from "@/types";
+import FilterModel from "@/components/FilterModal";
+import { useFilterStore } from "@/store/filterStore";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Text, TextInput, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SearchScreen() {
-  const [results, setResults] = useState<Property[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
-  const { openFilters } = useLocalSearchParams<{ openFilters?: string }>();
+    // const [results, setResults] = useState<Property[]>([]);
+    // const [loading, setLoading] = useState(false);
+   const [showFilters, setShowFilters] = useState(false);
 
-  useEffect(() => {
-    if (openFilters === "true") {
-      setShowFilter(true);
-    }
-  }, [openFilters]);
+   const { openFilters } = useLocalSearchParams<{ openFilters?: string }>();
+
+   useEffect(() => {
+     if (openFilters === "true") {
+        setShowFilters(true);
+     }
+   }, [openFilters]);
 
   const {
     search,
@@ -29,7 +30,14 @@ export default function SearchScreen() {
     setBedrooms,
     setMinPrice,
     setMaxPrice,
-  } = userFilterStore();
+  } = useFilterStore();
+
+  const activeFilterCount=[
+    type!==null,
+    bedrooms!==null,
+    minPrice!==null,
+    maxPrice!==null
+  ].filter(Boolean).length;
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
@@ -53,13 +61,56 @@ export default function SearchScreen() {
               className="flex-1 text-gray-800 mb-4 mt-4"
               placeholder="Search by title or city"
               placeholderTextColor="#9CA3AF"
-              value={search}
+               value={search}
               onChangeText={setSearch}
               autoCapitalize="none"
             />
+            {
+              search.length > 0 && (
+                <Ionicons
+                  name="close"
+                  size={18}
+                  color="#9CA3AF"
+                  onPress={() => setSearch("")}
+                />
+              )
+            }
           </View>
+           {/* Filter Button */}
+          <TouchableOpacity
+            onPress={() => setShowFilters(true)}
+            className={`w-12 h-12 rounded-2xl items-center justify-center ${
+              activeFilterCount > 0 ? "bg-blue-600" : "bg-white"
+            }`}
+            style={{
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 1 },
+              shadowOpacity: 0.06,
+              shadowRadius: 6,
+              elevation: 2,
+            }}
+          >
+            <Ionicons
+              name="options-outline"
+              size={20}
+              color={activeFilterCount > 0 ? "#fff" : "#374151"}
+            />
+            {activeFilterCount > 0 && (
+              <View className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full items-center justify-center">
+                <Text className="text-white text-[9px] font-bold">
+                  {activeFilterCount}
+                </Text>
+              </View>
+            )}
+          </TouchableOpacity>
+      
         </View>
+        {/* Filter Chips */}
       </View>
+      {/* Result */}
+      <FilterModel 
+      visible={showFilters} 
+      onClose={() => setShowFilters(false) }/>
     </SafeAreaView>
   );
 }
